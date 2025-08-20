@@ -1,112 +1,119 @@
-아하 이해했습니다 👍
-깃허브에서 **굵은 글자**를 표시하는 방법에는 두 가지가 있어요:
-
-1. `**굵게**` → **굵게**
-2. `## 제목` → 제목 스타일(굵은 + 크게 표시됨)
-
-즉, 단순히 텍스트를 강조하고 싶으면 `**`를 쓰면 되고, 섹션 구분용으로 제목을 쓰고 싶으면 `##`를 쓰는 게 맞습니다.
-
----
-
-제가 방금 만들어드린 README를 `##` 제목 중심으로 다시 재정리해드릴게요. 이렇게 하면 깃허브에서 확실히 굵고 크게 보입니다.
-
----
-
-# 🌊 Hydromizer – Hydrothermal Synthesis Optimizer
+# 🌊 Hydromizer
 
 ## Overview
 
-Hydromizer is a toolkit for simulating and optimizing **hydrothermal synthesis processes**.
-It determines the **optimal temperature, reaction time, and pressure** to achieve desired **yield (%)** and **moisture content (%)**.
-It also integrates **PFMEA** and a **Control Plan** for robust and safe operation.
+Hydromizer is a **console-based toolkit** for simulating and optimizing **hydrothermal synthesis processes**.
+It determines the optimal **Temperature (°C), Time (min), and Pressure (MPa)** to achieve a user-specified **yield (%)** and **moisture content (%)**.
+The system integrates **PFMEA (Process Failure Mode & Effects Analysis)** and a **Control Plan** for robust and safe operation.
 
 ---
 
-## Features
+## ✨ Features
 
-### Synthetic or User-Provided Data
+* **Data Handling**
 
-* Generates synthetic yield/moisture data if no dataset is available.
-* Or loads experimental data from **CSV files**.
+  * Load experimental data from CSV (`T_C, time_min, P_MPa[, yield_pct, moisture_pct]`).
+  * If yield/moisture are missing, the tool auto-generates realistic values.
+  * If no data is provided, it creates a synthetic dataset.
 
-### Optimal Process Parameter Recommendation
+* **Optimization**
 
-* Suggests best setpoints for **temperature, time, pressure**.
-* Provides auxiliary estimates like **condenser drain volume and time**.
+  * Given target yield and moisture, finds optimal **temperature, time, pressure**.
+  * Includes auxiliary predictions like **condenser drain volume and drain time**.
 
-### Integrated PFMEA Analysis
+* **FMEA Integration**
 
-* Identifies process risks (low yield, high moisture, overpressure, condenser overload).
-* Calculates **RPN (Risk Priority Number)** with recommended corrective actions.
+  * Evaluates risks: low yield, high moisture, overpressure, condenser overload.
+  * Calculates **RPN (Risk Priority Number)** and suggests corrective actions.
 
-### Automated Control Plan
+* **Control Plan Generation**
 
-* Defines **CTQs, monitoring methods, frequencies, and reaction plans**.
-* Structured for lab or pilot-scale use.
+  * Outputs CTQs with specs, monitoring methods, frequency, and reaction plans.
 
-### Interactive Modes
+* **Console-Friendly Output**
 
-* **CLI mode** → quick optimization runs.
-* **Streamlit app** → user-friendly interface.
-
----
-
-## How It Works
-
-1. **Data Preparation**
-
-   * Uses synthetic or user-provided CSV data (`runs.csv`).
-
-2. **Optimization**
-
-   * Grid search across temperature, time, pressure.
-   * Selects best condition based on target yield & moisture.
-
-3. **FMEA Generation**
-
-   * Builds a PFMEA table sorted by RPN.
-
-4. **Control Plan**
-
-   * Outputs CTQs, monitoring & reaction strategies.
+  * Supports `--ascii-out` for Windows-safe console display (no Unicode issues).
 
 ---
 
-## Usage
+## ⚙️ How It Works
 
-### CLI Mode
+1. **Dataset Preparation**
+
+   * Load CSV if provided; otherwise generate synthetic process data.
+
+2. **Model Training**
+
+   * Fits a **quadratic ridge regression model** (X → Y mapping).
+
+3. **Optimization Process**
+
+   * Coarse **grid search** across T, t, P ranges.
+   * Refines best candidate using **Nelder–Mead simplex**.
+
+4. **Outputs**
+
+   * Recommended setpoints (T, t, P).
+   * Predicted yield & moisture.
+   * Auxiliary condenser drain estimates.
+   * Full PFMEA table sorted by RPN.
+   * Detailed Control Plan.
+
+---
+
+## 🚀 Usage
+
+### Installation
 
 ```bash
-pip install -r requirements.txt
-python hydromizer.py
+pip install numpy pandas
 ```
 
-### Streamlit App
+### Run (Interactive)
 
 ```bash
-streamlit run hydromizer.py
+python hydro_hfmea_inverse.py
 ```
+
+### Run with Command-Line Options
+
+```bash
+python hydro_hfmea_inverse.py --target-y 90 --target-m 1.0 \
+    --data your_data.csv --grid 16x16x12 --pressure-mode autogenous \
+    --cond-duty-w 500 --ascii-out
+```
+
+### Options
+
+* `--data your.csv` → Load dataset
+* `--target-y 85`   → Target yield (%)
+* `--target-m 1.5`  → Target moisture (%)
+* `--grid 16x16x12` → Grid resolution for coarse search
+* `--pressure-mode` → `autogenous` (default) or `decoupled`
+* `--ascii-out`     → ASCII-safe console output
 
 ---
 
-## CSV Data
-
-* Default file: **runs.csv**
-* Format:
+## 📂 Example CSV Format
 
 ```csv
-T_C,time_min,P_MPa,drain_mL,drain_time_min,yield_pct,moisture_pct
+T_C,time_min,P_MPa,yield_pct,moisture_pct
+180,240,10,87.5,1.2
+200,300,12,91.0,0.9
 ```
 
----
-
-## Contributing
-
-Contributions are welcome!
-Please open issues, suggest enhancements, or submit pull requests.
+If `yield_pct` or `moisture_pct` are missing, the tool auto-generates them.
 
 ---
 
-## License
+## 🤝 Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for improvements.
+
+---
+
+## 📄 License
 
 MIT License
+
+---
