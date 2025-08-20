@@ -1,108 +1,112 @@
-Hydromizer – Hydrothermal Synthesis Optimizer
+아하 이해했습니다 👍
+깃허브에서 **굵은 글자**를 표시하는 방법에는 두 가지가 있어요:
 
-Hydromizer is a simulation and optimization toolkit for hydrothermal synthesis processes. It helps researchers and engineers determine the optimal temperature, reaction time, and pressure to achieve desired yield (%) and moisture content (%). The system also integrates PFMEA (Process Failure Mode & Effects Analysis) and Control Plan generation for process safety and robustness.
+1. `**굵게**` → **굵게**
+2. `## 제목` → 제목 스타일(굵은 + 크게 표시됨)
 
-✨ Features
+즉, 단순히 텍스트를 강조하고 싶으면 `**`를 쓰면 되고, 섹션 구분용으로 제목을 쓰고 싶으면 `##`를 쓰는 게 맞습니다.
 
-Synthetic or User-Provided Data:
+---
 
-Automatically generates synthetic yield/moisture data for simulations, or
+제가 방금 만들어드린 README를 `##` 제목 중심으로 다시 재정리해드릴게요. 이렇게 하면 깃허브에서 확실히 굵고 크게 보입니다.
 
-Loads experimental data from CSV files for model fitting.
+---
 
-Optimal Process Parameter Recommendation:
+# 🌊 Hydromizer – Hydrothermal Synthesis Optimizer
 
-Recommends best setpoints for temperature, time, and pressure to achieve user-specified targets.
+## Overview
 
-Provides auxiliary estimates such as condenser drain volume and time.
+Hydromizer is a toolkit for simulating and optimizing **hydrothermal synthesis processes**.
+It determines the **optimal temperature, reaction time, and pressure** to achieve desired **yield (%)** and **moisture content (%)**.
+It also integrates **PFMEA** and a **Control Plan** for robust and safe operation.
 
-Integrated PFMEA Analysis:
+---
 
-Identifies key process risks (low yield, high moisture, overpressure, condenser overload, runaway risk).
+## Features
 
-Calculates Risk Priority Number (RPN) and recommends corrective actions.
+### Synthetic or User-Provided Data
 
-Automated Control Plan:
+* Generates synthetic yield/moisture data if no dataset is available.
+* Or loads experimental data from **CSV files**.
 
-Generates a clear monitoring and reaction plan for critical process parameters (CTQs).
+### Optimal Process Parameter Recommendation
 
-Structured for practical operator use.
+* Suggests best setpoints for **temperature, time, pressure**.
+* Provides auxiliary estimates like **condenser drain volume and time**.
 
-Interactive Mode (CLI or Streamlit):
+### Integrated PFMEA Analysis
 
-CLI prompts allow quick optimization runs.
+* Identifies process risks (low yield, high moisture, overpressure, condenser overload).
+* Calculates **RPN (Risk Priority Number)** with recommended corrective actions.
 
-Streamlit app (optional) offers a user-friendly interface.
+### Automated Control Plan
 
-⚙️ How It Works
+* Defines **CTQs, monitoring methods, frequencies, and reaction plans**.
+* Structured for lab or pilot-scale use.
 
-Data Preparation
+### Interactive Modes
 
-If no CSV file is provided, the system generates synthetic hydrothermal data (random yield/moisture responses).
+* **CLI mode** → quick optimization runs.
+* **Streamlit app** → user-friendly interface.
 
-If a CSV (runs.csv) exists, the system fits a linear correction model to align surrogate predictions with experimental data.
+---
 
-Optimization
+## How It Works
 
-A grid search explores feasible ranges for T (°C), time (min), and P (MPa).
+1. **Data Preparation**
 
-Each condition is scored based on how well it matches the target yield and moisture.
+   * Uses synthetic or user-provided CSV data (`runs.csv`).
 
-The top-ranked setpoint is selected as the recommendation.
+2. **Optimization**
 
-FMEA Generation
+   * Grid search across temperature, time, pressure.
+   * Selects best condition based on target yield & moisture.
 
-Builds a lightweight PFMEA table sorted by RPN.
+3. **FMEA Generation**
 
-Suggests preventive/corrective actions for high-risk failure modes.
+   * Builds a PFMEA table sorted by RPN.
 
-Control Plan
+4. **Control Plan**
 
-Defines CTQs, monitoring methods, frequencies, and reaction plans.
+   * Outputs CTQs, monitoring & reaction strategies.
 
-Designed for immediate integration into lab or pilot-scale operations.
+---
 
-🚀 Usage
-CLI Mode
+## Usage
+
+### CLI Mode
+
+```bash
 pip install -r requirements.txt
 python hydromizer.py
+```
 
+### Streamlit App
 
-You’ll be prompted to enter target yield (%) and target moisture (%).
-The system outputs:
-
-Recommended temperature, time, and pressure
-
-Predicted yield/moisture
-
-Auxiliary drain estimates
-
-PFMEA table
-
-Control Plan
-
-Streamlit App (Optional)
+```bash
 streamlit run hydromizer.py
+```
 
+---
 
-Opens a web app for interactive use.
+## CSV Data
 
-📂 CSV Data
+* Default file: **runs.csv**
+* Format:
 
-Default filename: runs.csv
-
-Format:
-
+```csv
 T_C,time_min,P_MPa,drain_mL,drain_time_min,yield_pct,moisture_pct
+```
 
+---
 
-If present, the system uses it to improve accuracy.
+## Contributing
 
-🤝 Contributing
+Contributions are welcome!
+Please open issues, suggest enhancements, or submit pull requests.
 
-Contributions are welcome! Feel free to open issues, suggest enhancements, or submit pull requests.
+---
 
-📄 License
+## License
 
-This project is open-source and available under the MIT License
-.
+MIT License
